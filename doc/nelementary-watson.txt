@@ -1,0 +1,107 @@
+*nelementary-watson.txt*    Neovim Paraglide Translation Plugin
+
+NELSON ELEMENTARY WATSON                          *nelementary-watson*
+
+A Neovim plugin for displaying inline translation values from Paraglide JS
+i18n method calls. Shows actual translation text next to `m.methodName()`
+calls using virtual text.
+
+==============================================================================
+FEATURES                                           *nelementary-watson-features*
+
+• Inline Translation Display: Shows translation values as virtual text
+• inlang Project Support: Automatically detects inlang project configuration
+• Multi-language Support: Works with multiple locales
+• Real-time Updates: Updates translations as you type
+• Flexible Configuration: Configurable locale and update behavior
+
+==============================================================================
+REQUIREMENTS                                   *nelementary-watson-requirements*
+
+• Neovim 0.5+ (for virtual text support)
+• JavaScript/TypeScript/Svelte project with Paraglide JS setup
+• Translation files in JSON format
+
+==============================================================================
+INSTALLATION                                   *nelementary-watson-installation*
+
+Using lazy.nvim:
+>
+    {
+      "path/to/nelementary-watson",
+      config = function()
+        require("nelementary-watson").setup({
+          default_locale = "en",
+          update_in_insert = true,
+          -- other options...
+        })
+      end,
+    }
+<
+
+==============================================================================
+CONFIGURATION                                 *nelementary-watson-configuration*
+
+>
+    require("nelementary-watson").setup({
+      -- Default locale to display (fallback if not found in inlang settings)
+      default_locale = "en",
+      
+      -- Whether to update translations while typing in insert mode
+      update_in_insert = true,
+      
+      -- Debounce delay for updates (milliseconds)
+      update_delay = 300,
+      
+      -- Virtual text highlighting group
+      hl_group = "Comment",
+      
+      -- Enable debug logging
+      debug = false,
+    })
+<
+
+==============================================================================
+COMMANDS                                           *nelementary-watson-commands*
+
+                                                         *:NelsonChangeLocale*
+:NelsonChangeLocale     Change the current translation locale
+
+==============================================================================
+PROJECT STRUCTURE                             *nelementary-watson-project*
+
+inlang Projects (Recommended)~
+
+The plugin automatically reads `project.inlang/settings.json` to:
+• Use the `pathPattern` from `plugin.inlang.messageFormat` for locating files
+• Use the `baseLocale` as the default display locale
+
+Simple Messages Directory (Fallback)~
+
+If no inlang configuration is found, falls back to:
+• `./messages/{locale}.json` structure
+• "en" as the default locale
+
+==============================================================================
+SUPPORTED FILE TYPES                           *nelementary-watson-filetypes*
+
+• JavaScript (`.js`)
+• TypeScript (`.ts`)
+• Svelte (`.svelte`)
+
+==============================================================================
+EXAMPLE                                           *nelementary-watson-example*
+
+>
+    import * as m from '$lib/paraglide/messages';
+
+    const title = m.hello_world();        // → "Hello World"
+    const greeting = m.welcome_message(); // → "Welcome, User"
+<
+
+==============================================================================
+LICENSE                                           *nelementary-watson-license*
+
+MIT
+
+ vim:tw=78:ts=8:ft=help:norl:

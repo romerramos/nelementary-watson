@@ -1,0 +1,22 @@
+{
+  "hello_world": "Hello World",
+  "welcome_message": "Welcome to our application",
+  "error_occurred": "An error has occurred",
+  "user_greeting": "Hello, {name}!",
+  "item_count": "You have {count} items",
+  "debug_message": "Debug mode enabled",
+  "page_title": "My Awesome App",
+  "first_message": "This is the first message",
+  "second_message": "This is the second message",
+  "app_title": "Nelson Elementary Watson",
+  "app_description": "Neovim plugin for Paraglide translations",
+  "welcome_user": "Welcome, user!",
+  "form_error": "Please check your input",
+  "personal_greeting": "Hello, {name}! How are you?",
+  "header_title": "Main Header",
+  "description_text": "This is a description of the content",
+  "button_clicked": "Button was clicked!",
+  "click_me": "Click Me",
+  "error_message": "Something went wrong",
+  "footer_text": "Footer content here"
+}
