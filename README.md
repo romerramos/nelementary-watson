@@ -1,4 +1,4 @@
-# Nelson Elementary Watson - Neovim Paraglide Plugin
+# NElementary Watson - Neovim Paraglide Plugin
 
 A Neovim plugin for displaying inline translation values from Paraglide JS i18n method calls. Shows actual translation text next to `m.methodName()` calls using virtual text.
 
