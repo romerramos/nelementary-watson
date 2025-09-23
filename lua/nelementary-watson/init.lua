@@ -38,7 +38,7 @@ end
 
 -- Extract text wrapper function
 function M.extract_text()
-	extraction.extract_text_to_translation()
+	extraction.extract_text()
 end
 
 -- Attach to current buffer
