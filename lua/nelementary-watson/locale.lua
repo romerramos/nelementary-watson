@@ -127,4 +127,3 @@ function M.get_available_locales(workspace_root)
 end
 
 return M
-
