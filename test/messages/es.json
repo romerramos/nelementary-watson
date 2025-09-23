@@ -8,7 +8,7 @@
   "page_title": "Mi Aplicación Increíble",
   "first_message": "Este es el primer mensaje",
   "second_message": "Este es el segundo mensaje",
-  "app_title": "Nelson Elementary Watson",
+  "app_title": "ElementaryWatson",
   "app_description": "Plugin de Neovim para traducciones Paraglide",
   "welcome_user": "¡Bienvenido, usuario!",
   "form_error": "Por favor revisa tu entrada",

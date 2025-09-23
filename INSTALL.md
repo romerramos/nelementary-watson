@@ -108,7 +108,7 @@ your-project/
 
 ## Commands
 
-- `:NelsonChangeLocale` - Change the current locale for translation display
+- `:ElementaryWatsonChangeLocale` - Change the current locale for translation display
 
 ## Configuration Options
 

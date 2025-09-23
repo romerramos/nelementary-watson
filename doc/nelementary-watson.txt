@@ -1,6 +1,6 @@
 *nelementary-watson.txt*    Neovim Paraglide Translation Plugin
 
-NELSON ELEMENTARY WATSON                          *nelementary-watson*
+ELEMENTARYWATSON                          *nelementary-watson*
 
 A Neovim plugin for displaying inline translation values from Paraglide JS
 i18n method calls. Shows actual translation text next to `m.methodName()`
@@ -64,8 +64,8 @@ CONFIGURATION                                 *nelementary-watson-configuration*
 ==============================================================================
 COMMANDS                                           *nelementary-watson-commands*
 
-                                                         *:NelsonChangeLocale*
-:NelsonChangeLocale     Change the current translation locale
+                                                         *:ElementaryWatsonChangeLocale*
+:ElementaryWatsonChangeLocale     Change the current translation locale
 
 ==============================================================================
 PROJECT STRUCTURE                             *nelementary-watson-project*

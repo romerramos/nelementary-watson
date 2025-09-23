@@ -50,7 +50,7 @@ const param = m.user_greeting({ name: "John" });
 console.log(m.debug_message());
 ]]
 
-print("Testing Nelson Elementary Watson translation finding:")
+print("Testing ElementaryWatson translation finding:")
 print("====================================================")
 print()
 print("Test content:")

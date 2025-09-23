@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Demo script for Nelson Elementary Watson Neovim Plugin
+# Demo script for ElementaryWatson Neovim Plugin
 
-echo "🔥 Nelson Elementary Watson - Neovim Paraglide Plugin Demo"
+echo "🔥 ElementaryWatson - Neovim Paraglide Plugin Demo"
 echo "==========================================================="
 echo ""
 
@@ -44,7 +44,7 @@ echo "1. cd $(pwd)/test"
 echo "2. nvim sample.js"
 echo "3. :luafile test_plugin.lua"
 echo "4. You should see translation values displayed next to m.methodName() calls"
-echo "5. Use :NelsonChangeLocale to switch between 'en' and 'es'"
+echo "5. Use :ElementaryWatsonChangeLocale to switch between 'en' and 'es'"
 echo ""
 echo "✨ The plugin will show virtual text like:"
 echo "   const title = m.hello_world(); → \"Hello World\""

@@ -1,7 +1,7 @@
 -- Simple test script for the plugin
 -- Run this in Neovim with :luafile test/test_plugin.lua
 
-print("Testing Nelson Elementary Watson Plugin")
+print("Testing ElementaryWatson Plugin")
 print("======================================")
 
 -- Add plugin to path
@@ -76,4 +76,4 @@ else
 end
 
 print("\nTest completed! Open test/sample.js or test/sample.svelte to see the plugin in action.")
-print("Use :NelsonChangeLocale to switch between locales.")
+print("Use :ElementaryWatsonChangeLocale to switch between locales.")

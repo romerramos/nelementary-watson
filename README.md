@@ -34,7 +34,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 {
-  "path/to/nelementary-watson",
+  "romerramos/nelementary-watson",
   config = function()
     require("nelementary-watson").setup({
       default_locale = "en",
