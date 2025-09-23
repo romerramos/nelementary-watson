@@ -7,15 +7,15 @@ local M = {}
 
 -- Get selected text from visual mode
 function M.get_visual_selection()
-	local start_pos = vim.fn.getpos("'<")
-	local end_pos = vim.fn.getpos("'>")
+	local start_mark = vim.api.nvim_buf_get_mark(0, '<')
+	local end_mark = vim.api.nvim_buf_get_mark(0, '>')
 
-	if start_pos[2] == 0 or end_pos[2] == 0 then
+	if not start_mark or not end_mark then
 		return nil
 	end
 
-	local start_line, start_col = start_pos[2] - 1, start_pos[3] - 1
-	local end_line, end_col = end_pos[2] - 1, end_pos[3] - 1
+	local start_line, start_col = start_mark[1], start_mark[2]
+	local end_line, end_col = end_mark[1], end_mark[2]
 
 	local lines = vim.api.nvim_buf_get_lines(0, start_line, end_line + 1, false)
 
@@ -61,11 +61,15 @@ end
 
 -- Replace selected text in buffer
 function M.replace_selection(replacement)
-	local start_pos = vim.fn.getpos("'<")
-	local end_pos = vim.fn.getpos("'>")
+	local start_mark = vim.api.nvim_buf_get_mark(0, '<')
+	local end_mark = vim.api.nvim_buf_get_mark(0, '>')
 
-	local start_line, start_col = start_pos[2] - 1, start_pos[3] - 1
-	local end_line, end_col = end_pos[2] - 1, end_pos[3] - 1
+	if not start_mark or not end_mark then
+		return
+	end
+
+	local start_line, start_col = start_mark[1], start_mark[2]
+	local end_line, end_col = end_mark[1], end_mark[2]
 
 	if start_line == end_line then
 		local line = vim.api.nvim_buf_get_lines(0, start_line, start_line + 1, false)[1]
