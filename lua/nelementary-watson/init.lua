@@ -7,6 +7,7 @@ local translation = require("nelementary-watson.translation")
 local locale = require("nelementary-watson.locale")
 local decorator = require("nelementary-watson.decorator")
 local utils = require("nelementary-watson.utils")
+local extraction = require("nelementary-watson.extraction")
 
 -- Plugin state
 local timer = nil
@@ -16,9 +17,28 @@ local attached_buffers = {}
 function M.setup(opts)
 	config.setup(opts or {})
 
+	-- Set up keybinding for text extraction
+	M.setup_keybindings()
+
 	if config.options.debug then
 		print("ElementaryWatson: Plugin initialized")
 	end
+end
+
+-- Set up keybindings
+function M.setup_keybindings()
+	-- Set up <leader>i in visual mode for text extraction
+	vim.keymap.set("v", "<leader>i", function()
+		M.extract_text()
+	end, {
+		desc = "Extract selected text to translation",
+		silent = true,
+	})
+end
+
+-- Extract text wrapper function
+function M.extract_text()
+	extraction.extract_text_to_translation()
 end
 
 -- Attach to current buffer
@@ -196,6 +216,11 @@ end
 -- Create user commands
 vim.api.nvim_create_user_command("ElementaryWatsonChangeLocale", M.change_locale, {
 	desc = "Change translation locale",
+})
+
+vim.api.nvim_create_user_command("ElementaryWatsonExtract", M.extract_text, {
+	desc = "Extract selected text to translation",
+	range = true,
 })
 
 return M

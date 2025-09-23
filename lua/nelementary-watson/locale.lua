@@ -44,6 +44,11 @@ end
 function M.resolve_translation_path(workspace_root, locale_code)
 	local pattern = M.get_translation_path_pattern(workspace_root)
 
+	-- Safety check: ensure pattern is not nil
+	if not pattern then
+		pattern = "./messages/{locale}.json"
+	end
+
 	-- Replace {locale} placeholder
 	local relative_path = pattern:gsub("{locale}", locale_code)
 

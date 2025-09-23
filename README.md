@@ -7,6 +7,7 @@ Inspired by the VSCode ElementaryWatson extension, this is a simple, focused Neo
 ## Features
 
 - **Inline Translation Display**: Shows translation values as virtual text next to `m.methodName()` calls
+- **Text Extraction**: Extract hard-coded strings to translation keys with `<leader>i` (visual mode)
 - **inlang Project Support**: Automatically detects and uses inlang project configuration
 - **Multi-language Support**: Works with multiple locales with easy switching
 - **Real-time Updates**: Updates translations as you type (configurable)
@@ -101,6 +102,25 @@ import * as m from '$lib/paraglide/messages';
 const title = m.hello_world();        // → "Hello World"
 const greeting = m.welcome_message(); // → "Welcome, User"
 ```
+
+## Text Extraction
+
+### Usage
+1. Select text in visual mode
+2. Press `<leader>i` to extract to translation key
+3. Plugin generates unique snake_case key (e.g., `blue_mountain_swift_river`)
+4. Adds entry to current locale's JSON file (e.g., `messages/en.json`)
+5. Replaces selected text with appropriate function call
+
+### Smart Replacement
+- **JS/TS files**: `m.generated_key()`
+- **Svelte files**: `{m.generated_key()}`
+- **Other files**: Prompts for format choice
+
+### Commands
+- `<leader>i` (visual mode): Extract selected text
+- `:ElementaryWatsonExtract`: Alternative extraction command
+- `:ElementaryWatsonChangeLocale`: Change display locale
 
 ## License
 
