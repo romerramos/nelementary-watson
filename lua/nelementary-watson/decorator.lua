@@ -13,8 +13,16 @@ function M.apply_decorations(buf, results)
 
 	-- Apply new decorations
 	for _, result in ipairs(results) do
+		local virt_text = { { " → " .. result.text, config.options.hl_group } }
+
+		-- Add missing locales indicator if enabled and there are missing locales
+		if config.options.show_missing_locales and result.missing_locales and #result.missing_locales > 0 then
+			local missing_text = " [missing: " .. table.concat(result.missing_locales, ",") .. "]"
+			table.insert(virt_text, { missing_text, config.options.missing_locales_hl_group })
+		end
+
 		vim.api.nvim_buf_set_extmark(buf, namespace, result.line, result.col, {
-			virt_text = { { " → " .. result.text, config.options.hl_group } },
+			virt_text = virt_text,
 			virt_text_pos = "inline",
 		})
 	end

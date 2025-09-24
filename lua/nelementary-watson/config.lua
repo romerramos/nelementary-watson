@@ -17,6 +17,12 @@ M.defaults = {
 
 	-- Enable debug logging
 	debug = false,
+
+	-- Show missing locale codes for translation keys
+	show_missing_locales = true,
+
+	-- Highlighting group for missing locales indicator
+	missing_locales_hl_group = "DiagnosticHint",
 }
 
 -- Current options (will be set by setup)

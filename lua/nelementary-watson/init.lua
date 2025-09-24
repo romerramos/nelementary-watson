@@ -161,15 +161,36 @@ function M.process_buffer(buf)
 
 	-- Process calls and create decorations
 	local results = {}
-	for _, call in ipairs(calls) do
-		local value = translation.get_translation_value(translations, call.method_name)
-		if value then
+	if config.options.show_missing_locales then
+		-- Get available locales for missing locales check
+		local available_locales = locale.get_available_locales(workspace_root)
+
+		-- Use enhanced processing with missing locales information
+		local processed_results = translation.process_translation_calls_with_missing(
+			calls, translations, workspace_root, available_locales, current_locale
+		)
+
+		for _, result in ipairs(processed_results) do
 			table.insert(results, {
-				line = call.line,
-				col = call.end_col,
-				text = '"' .. value .. '"',
-				method_name = call.method_name,
+				line = result.line,
+				col = result.end_col,
+				text = '"' .. result.translation_value .. '"',
+				method_name = result.method_name,
+				missing_locales = result.missing_locales,
 			})
+		end
+	else
+		-- Use original processing without missing locales
+		for _, call in ipairs(calls) do
+			local value = translation.get_translation_value(translations, call.method_name)
+			if value then
+				table.insert(results, {
+					line = call.line,
+					col = call.end_col,
+					text = '"' .. value .. '"',
+					method_name = call.method_name,
+				})
+			end
 		end
 	end
 
