@@ -6,15 +6,6 @@ local Range = require("u.range")
 
 local M = {}
 
--- Get selected text from visual mode
-function M.get_visual_selection()
-	local range = Range.from_vtext()
-	if range:is_empty() then
-		return nil
-	end
-	return range:text()
-end
-
 -- Add translation using vim functions (preserves formatting better)
 function M.add_translation_to_file(file_path, key, value)
 	-- Create directory if it doesn't exist
@@ -45,9 +36,8 @@ function M.add_translation_to_file(file_path, key, value)
 end
 
 -- Replace selected text in buffer
-function M.replace_selection(replacement)
-	local range = Range.from_vtext()
-	if range:is_empty() then
+function M.replace_selection(replacement, range)
+	if not range or range:is_empty() then
 		return
 	end
 	range:replace(replacement)
@@ -62,12 +52,13 @@ function M.extract_text()
 		return
 	end
 
-	-- Get selected text
-	local selected_text = M.get_visual_selection()
-	if not selected_text or selected_text == "" then
+	-- Get the range and selected text
+	local range = Range.from_vtext()
+	if range:is_empty() then
 		print("ElementaryWatson: No text selected")
 		return
 	end
+	local selected_text = range:text()
 
 	-- Trim whitespace
 	selected_text = selected_text:match("^%s*(.-)%s*$")
@@ -96,7 +87,7 @@ function M.extract_text()
 		prompt = "Choose replacement format:",
 	}, function(choice)
 		if choice then
-			M.replace_selection(choice)
+			M.replace_selection(choice, range)
 			print("ElementaryWatson: Extracted '" .. selected_text .. "' as '" .. key .. "'")
 		end
 	end)
