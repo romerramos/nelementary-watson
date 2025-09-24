@@ -27,12 +27,31 @@ function M.add_translation_to_file(file_path, key, value)
 	-- Add new translation
 	translations[key] = value
 
-	-- Write back with basic formatting
-	local json_content = vim.json.encode(translations)
-	-- Simple formatting: add newlines and indentation
-	json_content = json_content:gsub(',"', ',\n  "'):gsub("^{", "{\n  "):gsub("}$", "\n}")
-
+	-- Write back JSON content
+	local json_content = vim.json.encode(translations, { indent = "  " })
 	vim.fn.writefile(vim.split(json_content, "\n"), file_path)
+
+	-- Format the file using Neovim's formatter
+	vim.schedule(function()
+		local bufnr = vim.fn.bufnr(file_path)
+		if bufnr == -1 then
+			-- File not loaded, open it temporarily
+			vim.cmd("silent! edit " .. vim.fn.fnameescape(file_path))
+			bufnr = vim.fn.bufnr()
+		end
+
+		-- Format using LSP if available, otherwise use built-in formatting
+		local success = pcall(vim.lsp.buf.format, { bufnr = bufnr, async = false })
+		if not success then
+			-- Fallback to basic formatting
+			vim.cmd("silent! %!jq .")
+		end
+
+		-- Save if buffer was modified
+		if vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
+			vim.cmd("silent! write")
+		end
+	end)
 end
 
 -- Replace selected text in buffer
