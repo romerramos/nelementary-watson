@@ -27,31 +27,41 @@ function M.add_translation_to_file(file_path, key, value)
 	-- Add new translation
 	translations[key] = value
 
-	-- Write back JSON content
-	local json_content = vim.json.encode(translations, { indent = "  " })
-	vim.fn.writefile(vim.split(json_content, "\n"), file_path)
+	-- Write JSON content and format with vim
+	local json_content = vim.json.encode(translations)
 
-	-- Format the file using Neovim's formatter
-	vim.schedule(function()
-		local bufnr = vim.fn.bufnr(file_path)
-		if bufnr == -1 then
-			-- File not loaded, open it temporarily
-			vim.cmd("silent! edit " .. vim.fn.fnameescape(file_path))
-			bufnr = vim.fn.bufnr()
-		end
+	-- Write basic JSON first
+	vim.fn.writefile({ json_content }, file_path)
 
-		-- Format using LSP if available, otherwise use built-in formatting
-		local success = pcall(vim.lsp.buf.format, { bufnr = bufnr, async = false })
-		if not success then
-			-- Fallback to basic formatting
-			vim.cmd("silent! %!jq .")
-		end
+	-- Format the file using vim's built-in capabilities
+	local buf = vim.fn.bufadd(file_path)
+	vim.fn.bufload(buf)
 
-		-- Save if buffer was modified
-		if vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
-			vim.cmd("silent! write")
-		end
-	end)
+	-- Set filetype and format the JSON
+	vim.api.nvim_buf_set_option(buf, "filetype", "json")
+
+	-- Format using jq if available, otherwise use vim's indent
+	local has_jq = vim.fn.executable("jq") == 1
+	if has_jq then
+		vim.fn.system(
+			"jq . "
+				.. vim.fn.shellescape(file_path)
+				.. " > "
+				.. vim.fn.shellescape(file_path .. ".tmp")
+				.. " && mv "
+				.. vim.fn.shellescape(file_path .. ".tmp")
+				.. " "
+				.. vim.fn.shellescape(file_path)
+		)
+	else
+		-- Fallback: use vim's indenting
+		vim.api.nvim_buf_call(buf, function()
+			vim.cmd("normal! gg=G")
+		end)
+		vim.api.nvim_buf_call(buf, function()
+			vim.cmd("write")
+		end)
+	end
 end
 
 -- Replace selected text in buffer
