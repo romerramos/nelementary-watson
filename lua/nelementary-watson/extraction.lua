@@ -2,32 +2,17 @@
 local words = require("nelementary-watson.words")
 local locale = require("nelementary-watson.locale")
 local utils = require("nelementary-watson.utils")
+local Range = require("u.range")
 
 local M = {}
 
 -- Get selected text from visual mode
 function M.get_visual_selection()
-	local start_mark = vim.api.nvim_buf_get_mark(0, '<')
-	local end_mark = vim.api.nvim_buf_get_mark(0, '>')
-
-	if not start_mark or not end_mark then
+	local range = Range.from_vtext()
+	if range:is_empty() then
 		return nil
 	end
-
-	local start_line, start_col = start_mark[1], start_mark[2]
-	local end_line, end_col = end_mark[1], end_mark[2]
-
-	local lines = vim.api.nvim_buf_get_lines(0, start_line, end_line + 1, false)
-
-	if #lines == 0 then return nil end
-
-	if #lines == 1 then
-		return lines[1]:sub(start_col + 1, end_col + 1)
-	else
-		lines[1] = lines[1]:sub(start_col + 1)
-		lines[#lines] = lines[#lines]:sub(1, end_col + 1)
-		return table.concat(lines, "\n")
-	end
+	return range:text()
 end
 
 -- Add translation using vim functions (preserves formatting better)
@@ -54,33 +39,18 @@ function M.add_translation_to_file(file_path, key, value)
 	-- Write back with basic formatting
 	local json_content = vim.json.encode(translations)
 	-- Simple formatting: add newlines and indentation
-	json_content = json_content:gsub(',"', ',\n  "'):gsub('^{', '{\n  '):gsub('}$', '\n}')
+	json_content = json_content:gsub(',"', ',\n  "'):gsub("^{", "{\n  "):gsub("}$", "\n}")
 
-	vim.fn.writefile(vim.split(json_content, '\n'), file_path)
+	vim.fn.writefile(vim.split(json_content, "\n"), file_path)
 end
 
 -- Replace selected text in buffer
 function M.replace_selection(replacement)
-	local start_mark = vim.api.nvim_buf_get_mark(0, '<')
-	local end_mark = vim.api.nvim_buf_get_mark(0, '>')
-
-	if not start_mark or not end_mark then
+	local range = Range.from_vtext()
+	if range:is_empty() then
 		return
 	end
-
-	local start_line, start_col = start_mark[1], start_mark[2]
-	local end_line, end_col = end_mark[1], end_mark[2]
-
-	if start_line == end_line then
-		local line = vim.api.nvim_buf_get_lines(0, start_line, start_line + 1, false)[1]
-		local new_line = line:sub(1, start_col) .. replacement .. line:sub(end_col + 2)
-		vim.api.nvim_buf_set_lines(0, start_line, start_line + 1, false, {new_line})
-	else
-		local first_line = vim.api.nvim_buf_get_lines(0, start_line, start_line + 1, false)[1]
-		local last_line = vim.api.nvim_buf_get_lines(0, end_line, end_line + 1, false)[1]
-		local new_line = first_line:sub(1, start_col) .. replacement .. last_line:sub(end_col + 2)
-		vim.api.nvim_buf_set_lines(0, start_line, end_line + 1, false, {new_line})
-	end
+	range:replace(replacement)
 end
 
 -- Main extraction function
@@ -119,7 +89,7 @@ function M.extract_text()
 	-- Present format options to user
 	local format_options = {
 		"m." .. key .. "()",
-		"{m." .. key .. "()}"
+		"{m." .. key .. "()}",
 	}
 
 	vim.ui.select(format_options, {
@@ -133,4 +103,3 @@ function M.extract_text()
 end
 
 return M
-
